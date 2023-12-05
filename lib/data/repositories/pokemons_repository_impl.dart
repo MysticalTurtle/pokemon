@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+// import 'package:hive/hive.dart';
 import 'package:pokedex/core/error/failure.dart';
-import 'package:pokedex/core/utils/check_internet.dart';
 import 'package:pokedex/domain/datasource/pokemon_local_datasource.dart';
 import 'package:pokedex/domain/datasource/pokemon_remote_datasource.dart';
 import 'package:pokedex/domain/entities/pokemon.dart';
@@ -15,7 +15,6 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
   Future<Either<Failure, List<Pokemon>>> getPokemonList(
       int offset, int limit) async {
     List<Pokemon> pokemons = [];
-    bool? hasInternet;
 
     for (int i = offset; i < offset + limit; i++) {
       Pokemon? pokemon;
@@ -24,16 +23,9 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
       try {
         pokemon = await localDatasource.getPokemon(i.toString());
         pokemons.add(pokemon!);
+        continue;
       } catch (e) {
         debugPrint(e.toString());
-      }
-
-      // Check internet connection only 1 time
-      if (hasInternet == null) {
-        hasInternet = await CheckInternet.checkInternet();
-        if (!hasInternet) {
-          return Left(Failure(message: "No internet connection"));
-        }
       }
 
       // Get pokemon from remote and save to local
@@ -66,15 +58,9 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
       debugPrint("localDatasource: $e");
     }
 
-    // Check internet connection
-    if (!await CheckInternet.checkInternet()) {
-      return Left(Failure(message: "No internet connection"));
-    }
-
     // Get pokemon from remote and save to local
     try {
       pokemon = await remoteDataSource.getPokemon(id);
-      localDatasource.savePokemon(pokemon);
       return Right(pokemon);
     } catch (e) {
       debugPrint("remoteDataSourcee: $e");

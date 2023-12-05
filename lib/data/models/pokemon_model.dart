@@ -63,19 +63,17 @@ class PokemonModel {
       }
     });
 
-    return Pokemon.fromMap({
-      "id": id,
-      "name": name,
-      "image": imageUrl,
-      "weight": weight,
-      "height": height,
-      "baseExperience": baseExperience,
-      "moves": moveList,
-      "description": description,
-      "stats": statList,
-      "types": typeList,
-      "imageUrl": imageUrl,
-    });
+    return Pokemon(
+      id: id!,
+      name: name!,
+      image: imageUrl!,
+      weight: weight!,
+      height: height!,
+      moves: moveList,
+      description: description!,
+      stats: statList,
+      types: typeList,
+    );
   }
 
   factory PokemonModel.fromJson(Map<String, dynamic> json) => PokemonModel(

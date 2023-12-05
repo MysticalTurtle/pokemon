@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class CheckInternet {
@@ -10,7 +9,7 @@ class CheckInternet {
       } else {
         return false;
       }
-    } on SocketException catch (_) {
+    } catch (_) {
       return false;
     }
   }

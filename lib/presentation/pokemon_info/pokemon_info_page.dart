@@ -132,7 +132,7 @@ class PokemonInfoPage extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         if (pokemon.id <= 1) return;
-                        Navigator.of(context).push(
+                        Navigator.of(context).pushReplacement(
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) => PokemonInfoPage(
                               pokemon: context
@@ -161,7 +161,7 @@ class PokemonInfoPage extends StatelessWidget {
                     onTap: () {
                       if (context.read<HomeBloc>().state.pokemons.length <=
                           pokemon.id) return;
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) => PokemonInfoPage(
                             pokemon: context

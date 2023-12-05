@@ -1,19 +1,21 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
 import 'package:pokedex/domain/datasource/pokemon_local_datasource.dart';
 import 'package:pokedex/domain/entities/pokemon.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonLocalDatasourceImpl implements PokemonLocalDatasource {
   @override
-  List<Pokemon> getPokemonList(int offset, int limit) {
+  Future<List<Pokemon>> getPokemonList(int offset, int limit) {
     throw UnimplementedError();
   }
 
   @override
-  Pokemon? getPokemon(String id) {
-    var box = Hive.box<String>('pokedex');
-    String? pokemonJson = box.get(id);
+  Future<Pokemon?> getPokemon(String id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? pokemonJson = prefs.getString(id);
     if (pokemonJson != null) {
       return Pokemon.fromMap(jsonDecode(pokemonJson));
     }
@@ -21,16 +23,16 @@ class PokemonLocalDatasourceImpl implements PokemonLocalDatasource {
   }
 
   @override
-  void savePokemon(Pokemon pokemon) {
-    var box = Hive.box<String>('pokedex');
-    box.put(pokemon.id, jsonEncode(pokemon.toMap()));
+  Future<void> savePokemon(Pokemon pokemon) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(pokemon.id.toString(), jsonEncode(pokemon.toMap()));
   }
 
   @override
-  void savePokemonList(List<Pokemon> pokemons) {
-    var box = Hive.box<String>('pokedex');
+  Future<void> savePokemonList(List<Pokemon> pokemons) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     for (var pokemon in pokemons) {
-      box.put(pokemon.id, jsonEncode(pokemon.toMap()));
+      prefs.setString(pokemon.id.toString(), jsonEncode(pokemon.toMap()));
     }
   }
 

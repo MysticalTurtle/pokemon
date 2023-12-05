@@ -2,6 +2,8 @@
 
 This is a project to display a list of pokemons and its characteristics, also allows to seaach by entering the pokemon id or the name
 
+You can sort by name or id.
+
 The pokemon information comes from the api [PokemonApi](https://pokeapi.co/).
 
 The project uses clean architecture with BLoC pattern, the dependency injection is defined in the injection_container.dart file.
@@ -24,10 +26,12 @@ To run the app, you have to take into account the next requisites and steps:
 
 
 ## Todo
-There is an error with parsing that prevents local storage from working
+- Add more animations
+- Add an httpclient as a dependency injection in remote datasources
 
 ## Resources
 The design was made from 
 - [Figma](https://www.figma.com/file/jIIrEkkQifoCVKLtVoFkK1/Pok%C3%A9dex-(Community)?type=design&mode=design)
+- [Apk](https://drive.google.com/file/d/1jAfSWW5W6EPIG_D1bymbfhbZP6MQg_do/view?usp=sharing)
 
 

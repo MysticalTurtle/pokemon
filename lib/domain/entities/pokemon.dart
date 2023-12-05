@@ -30,10 +30,10 @@ class Pokemon {
       image: json['image'],
       weight: json['weight'],
       height: json['height'],
-      moves: json["moves"],
+      moves: List<String>.from(json["moves"]!.map((x) => x)),
       description: json['description'],
-      stats: List<Status>.from(json["stats"].map((x) => x)),
-      types: json["types"],
+      stats: List<Status>.from(json["stats"].map((x) => Status.fromMap(x))),
+      types: List<String>.from(json["types"]!.map((x) => x)),
     );
   }
 
@@ -45,10 +45,10 @@ class Pokemon {
       'image': image,
       'weight': weight,
       'height': height,
-      'moves': moves,
+      'moves': List<dynamic>.from(moves.map((x) => x)),
       'description': description,
-      'stats': List<Status>.from(stats.map((x) => x.toMap())),
-      'types': types,
+      'stats': List<dynamic>.from(stats.map((x) => x.toMap())),
+      'types': List<dynamic>.from(types.map((x) => x)),
     };
   }
 }
