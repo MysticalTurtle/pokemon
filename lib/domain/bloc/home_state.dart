@@ -14,6 +14,9 @@ final class HomeFetched extends HomeState {
       : super(pokemons: pokemons);
 }
 
-final class HomeLoading extends HomeState {}
+final class HomeLoading extends HomeState {
+  const HomeLoading({required List<Pokemon> pokemons})
+      : super(pokemons: pokemons);
+}
 
 final class HomeFailure extends HomeState {}

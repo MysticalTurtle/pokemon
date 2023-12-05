@@ -16,7 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeFetchPokemons>(
       (event, emit) async {
         if (state is HomeLoading) return;
-        emit(HomeLoading());
+        emit(HomeLoading(pokemons: state.pokemons));
 
         var response = await repository.getPokemonList(offset, limit);
         response.fold(

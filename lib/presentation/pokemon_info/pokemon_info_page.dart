@@ -35,7 +35,6 @@ class PokemonInfoPage extends StatelessWidget {
         ),
       ),
       backgroundColor: pokemon.types.first.mapToColor(),
-      // backgroundColor: "fire".mapToColor(),
       body: Stack(
         children: [
           // Pokemon Description
