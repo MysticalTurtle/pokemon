@@ -28,7 +28,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
 
         while (offset < 18) {
-          print(offset);
           var response = await repository.getPokemonList(offset, limit);
           response.fold(
             (l) => emit(HomeFailure()),

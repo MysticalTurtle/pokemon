@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print("RUNNING LOAD MORE");
       sl<HomeBloc>().add(HomeFetchPokemons());
     }
   }
@@ -104,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   child: InnerShadow(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 32),
+                          horizontal: 16, vertical: 16),
                       child: BlocBuilder<HomeBloc, HomeState>(
                         builder: (context, state) {
                           return GridView(

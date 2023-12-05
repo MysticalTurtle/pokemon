@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pokedex/core/extensions/name_color.dart';
+import 'package:pokedex/core/extensions/string_extension.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
 import 'package:pokedex/core/theme/app_icons.dart';
 import 'package:pokedex/core/theme/app_text_styles.dart';
 import 'package:pokedex/core/widgets/inner_shadow.dart';
+import 'package:pokedex/domain/bloc/home_bloc.dart';
 import 'package:pokedex/domain/entities/pokemon.dart';
 import 'package:pokedex/presentation/pokemon_info/stat_info.dart';
 import 'characteristics.dart';
@@ -69,7 +72,6 @@ class PokemonInfoPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const SizedBox(height: 20),
-                              const ElementWidget(element: "fire"),
                               ...pokemon.types
                                   .map((e) => ElementWidget(element: e))
                                   .toList(),
@@ -83,16 +85,16 @@ class PokemonInfoPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const Characteristics(
-                            weight: '8.5',
-                            height: '0.6',
-                            moves: ["Mega-Punch", "Fire-Punch"],
+                          Characteristics(
+                            weight: pokemon.weight.toDouble().toString(),
+                            height: pokemon.height.toDouble().toString(),
+                            moves: pokemon.moves,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 30, horizontal: 10),
+                                vertical: 30, horizontal: 0),
                             child: Text(
-                              pokemon.description,
+                              pokemon.description.removeNewLines(),
                               style: AppTextStyles.body1,
                             ),
                           ),
@@ -102,41 +104,13 @@ class PokemonInfoPage extends StatelessWidget {
                               color: pokemon.types.first.mapToColor(),
                             ),
                           ),
-                          ...pokemon.stats.map((e) => StatInfo(
-                                text: e.name,
-                                value: e.value.toDouble(),
-                                color: pokemon.types.first.mapToColor(),
-                              )),
-                          // StatInfo(
-                          //   text: "HP",
-                          //   value: 39,
-                          //   color: "fire".mapToColor(),
-                          // ),
-                          // StatInfo(
-                          //   text: "ATK",
-                          //   value: 52,
-                          //   color: "fire".mapToColor(),
-                          // ),
-                          // StatInfo(
-                          //   text: "DEF",
-                          //   value: 43,
-                          //   color: "fire".mapToColor(),
-                          // ),
-                          // StatInfo(
-                          //   text: "SATK",
-                          //   value: 60,
-                          //   color: "fire".mapToColor(),
-                          // ),
-                          // StatInfo(
-                          //   text: "SDEF",
-                          //   value: 50,
-                          //   color: "fire".mapToColor(),
-                          // ),
-                          // StatInfo(
-                          //   text: "SPD",
-                          //   value: 65,
-                          //   color: "fire".mapToColor(),
-                          // ),
+                          ...pokemon.stats.map(
+                            (e) => StatInfo(
+                              text: e.name,
+                              value: e.value.toDouble(),
+                              color: pokemon.types.first.mapToColor(),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -154,7 +128,24 @@ class PokemonInfoPage extends StatelessWidget {
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(child: Image.asset(AppIcons.chevronLeftWhite)),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (pokemon.id <= 1) return;
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => PokemonInfoPage(
+                              pokemon: context
+                                  .read<HomeBloc>()
+                                  .state
+                                  .pokemons[pokemon.id - 2],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Image.asset(AppIcons.chevronLeftWhite),
+                    ),
+                  ),
                   CachedNetworkImage(
                     imageUrl: pokemon.image,
                     placeholder: (context, _) =>
@@ -165,7 +156,24 @@ class PokemonInfoPage extends StatelessWidget {
                     errorWidget: (_, __, ___) => const Icon(Icons.error),
                     height: MediaQuery.of(context).size.width * 0.6,
                   ),
-                  Expanded(child: Image.asset(AppIcons.chevronRightWhite)),
+                  Expanded(
+                      child: GestureDetector(
+                    onTap: () {
+                      if (context.read<HomeBloc>().state.pokemons.length <=
+                          pokemon.id) return;
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => PokemonInfoPage(
+                            pokemon: context
+                                .read<HomeBloc>()
+                                .state
+                                .pokemons[pokemon.id],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.asset(AppIcons.chevronRightWhite),
+                  )),
                 ],
               ),
             ),

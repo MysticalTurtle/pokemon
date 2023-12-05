@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokedex/domain/bloc/home_bloc.dart';
+import 'core/theme/app_colors.dart';
 import 'injection_container.dart';
 import 'presentation/home/home_page.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
   await Hive.initFlutter();
+  await Hive.openBox<String>('pokedex');
   WidgetsFlutterBinding.ensureInitialized();
 
   await di.init();
@@ -24,10 +26,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Pokédex',
+      title: 'Pokedex',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: AppColors.white),
+        ),
       ),
       home: const HomePage(),
     );

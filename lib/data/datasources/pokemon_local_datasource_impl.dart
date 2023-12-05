@@ -1,24 +1,41 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
 import 'package:pokedex/domain/datasource/pokemon_local_datasource.dart';
 import 'package:pokedex/domain/entities/pokemon.dart';
 
 class PokemonLocalDatasourceImpl implements PokemonLocalDatasource {
   @override
-  Future<List<Pokemon>> getPokemonList(int offset, int limit) {
+  List<Pokemon> getPokemonList(int offset, int limit) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Pokemon> getPokemon(String id) {
-    throw UnimplementedError();
+  Pokemon? getPokemon(String id) {
+    var box = Hive.box<String>('pokedex');
+    String? pokemonJson = box.get(id);
+    if (pokemonJson != null) {
+      return Pokemon.fromMap(jsonDecode(pokemonJson));
+    }
+    return null;
   }
 
   @override
-  Future<void> savePokemon(Pokemon pokemon) {
-    throw UnimplementedError();
+  void savePokemon(Pokemon pokemon) {
+    var box = Hive.box<String>('pokedex');
+    box.put(pokemon.id, jsonEncode(pokemon.toMap()));
   }
 
   @override
-  Future<void> savePokemonList(List<Pokemon> pokemons) {
+  void savePokemonList(List<Pokemon> pokemons) {
+    var box = Hive.box<String>('pokedex');
+    for (var pokemon in pokemons) {
+      box.put(pokemon.id, jsonEncode(pokemon.toMap()));
+    }
+  }
+
+  @override
+  List<Pokemon> searchPokemon(String query) {
     throw UnimplementedError();
   }
 }

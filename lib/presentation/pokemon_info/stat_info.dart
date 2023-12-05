@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/extensions/name_color.dart';
+import 'package:pokedex/core/extensions/string_extension.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
 import 'package:pokedex/core/theme/app_text_styles.dart';
 

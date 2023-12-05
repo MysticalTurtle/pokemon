@@ -71,7 +71,7 @@ class PokemonModel {
       "height": height,
       "baseExperience": baseExperience,
       "moves": moveList,
-      "description": "",
+      "description": description,
       "stats": statList,
       "types": typeList,
       "imageUrl": imageUrl,
@@ -95,7 +95,7 @@ class PokemonModel {
         types: json["types"] == null
             ? []
             : List<Type>.from(json["types"]!.map((x) => Type.fromJson(x))),
-        weight: 22,
+        weight: json["weight"],
         imageUrl: json["sprites"]["other"]["home"]["front_default"],
         description: "",
       );

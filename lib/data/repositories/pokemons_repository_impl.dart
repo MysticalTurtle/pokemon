@@ -20,13 +20,13 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
     for (int i = offset; i < offset + limit; i++) {
       Pokemon? pokemon;
 
-      // // Check if pokemon is in local database
-      // try {
-      //   pokemon = await localDatasource.getPokemon(i.toString());
-      //   pokemons.add(pokemon);
-      // } catch (e) {
-      //   debugPrint(e.toString());
-      // }
+      // Check if pokemon is in local database
+      try {
+        pokemon = await localDatasource.getPokemon(i.toString());
+        pokemons.add(pokemon!);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
 
       // Check internet connection only 1 time
       if (hasInternet == null) {
@@ -40,7 +40,7 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
       try {
         pokemon = await remoteDataSource.getPokemon(i.toString());
         pokemons.add(pokemon);
-        // await localDatasource.savePokemon(pokemon);
+        localDatasource.savePokemon(pokemon);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -59,7 +59,9 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
     // Check if pokemon is in local database
     try {
       pokemon = await localDatasource.getPokemon(id);
-      return Right(pokemon);
+      if (pokemon != null) {
+        return Right(pokemon);
+      }
     } catch (e) {
       debugPrint("localDatasource: $e");
     }
@@ -72,7 +74,7 @@ class PokemonsRepositoryImpl extends PokemonsRepository {
     // Get pokemon from remote and save to local
     try {
       pokemon = await remoteDataSource.getPokemon(id);
-      // await localDatasource.savePokemon(pokemon);
+      localDatasource.savePokemon(pokemon);
       return Right(pokemon);
     } catch (e) {
       debugPrint("remoteDataSourcee: $e");

@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/error/failure.dart';
 import 'package:pokedex/data/models/pokemon_model.dart';
 import 'package:pokedex/domain/datasource/pokemon_remote_datasource.dart';

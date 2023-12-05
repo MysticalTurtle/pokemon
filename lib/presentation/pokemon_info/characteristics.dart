@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/extensions/string_extension.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
 import 'package:pokedex/core/theme/app_icons.dart';
 import 'package:pokedex/core/theme/app_text_styles.dart';
@@ -57,9 +58,9 @@ class Characteristics extends StatelessWidget {
         ),
         Column(
           children: [
-            Text(moves.first, style: AppTextStyles.body1),
+            Text(moves[0].toTitleCase(), style: AppTextStyles.body1),
             const SizedBox(height: 10),
-            Text(moves[1], style: AppTextStyles.body1),
+            Text(moves[1].toTitleCase(), style: AppTextStyles.body1),
             const SizedBox(height: 10),
             const Text("Moves", style: AppTextStyles.body1),
           ],

@@ -23,8 +23,10 @@ To run the app, you have to take into account the next requisites and steps:
 * Inside the folder of the repository, run "flutter run".
 
 
-## Resources
+## Todo
+There is an error with parsing that prevents local storage from working
 
+## Resources
 The design was made from 
 - [Figma](https://www.figma.com/file/jIIrEkkQifoCVKLtVoFkK1/Pok%C3%A9dex-(Community)?type=design&mode=design)
 
